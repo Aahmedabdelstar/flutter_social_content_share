@@ -1,6 +1,5 @@
 import Flutter
 import UIKit
-import FBSDKShareKit
 import Photos
 import MessageUI
 
@@ -41,9 +40,7 @@ public class SwiftFlutterSocialContentSharePlugin: NSObject, FlutterPlugin, Shar
                 _ = arguments["imageName"] as? String ?? ""
                 
                 switch type {
-                case "ShareType.facebookWithoutImage":
-                    shareFacebookWithoutImage(withQuote: shareQuote, withUrl: shareUrl)
-                    break
+
                     
                 case "ShareType.instagramWithImageUrl":
                     let url = URL(string: shareImageUrl)
@@ -96,30 +93,7 @@ public class SwiftFlutterSocialContentSharePlugin: NSObject, FlutterPlugin, Shar
         }
     }
     
-    //MARK: SHARE POST ON FACEBOOK WITHOUT IMAGE
-    private func shareFacebookWithoutImage(withQuote quote: String?, withUrl urlString: String?) {
-        DispatchQueue.main.async {
-            let shareContent = ShareLinkContent()
-            if let url = urlString {
-                shareContent.contentURL = URL.init(string: url)!
-            }
-            if let quoteString = quote {
-                shareContent.quote = quoteString.htmlToString
-            }
-            if let flutterAppDelegate = UIApplication.shared.delegate as? FlutterAppDelegate {
-                let shareDialog = ShareDialog(
-                    fromViewController: flutterAppDelegate.window.rootViewController,
-                    content: shareContent,
-                    delegate: self
-                )
-                shareDialog.mode = .automatic
-                shareDialog.show()
-                self.result?("Success")
-            } else{
-                self.result?("Failure")
-            }
-        }
-    }
+
     
     //MARK: SHARE POST ON INSTAGRAM WITH IMAGE NETWORKING URL
     private func shareInstagramWithImageUrl(image: UIImage, result:((Bool)->Void)? = nil) {
